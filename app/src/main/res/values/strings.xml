@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CatFeed</string>
+    <string name="action_settings">settings</string>
+    <string name="url_text_edit">Адрес</string>
+</resources>
