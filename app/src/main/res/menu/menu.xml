@@ -8,4 +8,9 @@ tools:context="dev.iotml.ru.catfeeder.MainActivity">
     android:orderInCategory="100"
     android:title="@string/action_settings"
     app:showAsAction="never" />
+    <item
+        android:id="@+id/action_upnp"
+        android:orderInCategory="100"
+        android:title="@string/action_upnp"
+        app:showAsAction="never" />
 </menu>

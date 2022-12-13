@@ -59,8 +59,16 @@ public class MainActivity extends AppCompatActivity {
             //Create new activity
             Intent intent = new Intent(this, SettingsPage.class);
             startActivityForResult(intent,1);
-        }
+        } else
+        if (id == R.id.action_upnp) {
 
+            //System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
+            UdpBrowser UB = new UdpBrowser();
+            UB.Mainfunc();
+            Toast.makeText(this, "UPNP find"+UB.ReciveMsg, Toast.LENGTH_SHORT).show();
+            //Create new activity
+            //Intent intent = new Intent(this, UdpBrowser.class);
+        }
         return super.onOptionsItemSelected(item);
     }
 
