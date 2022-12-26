@@ -3,4 +3,7 @@
     <string name="action_settings">settings</string>
     <string name="action_upnp">UPNP</string>
     <string name="url_text_edit">Адрес</string>
+    <string name="port_udp">UDP порт</string>
+    <string name="port_ws">WS порт</string>
+
 </resources>
