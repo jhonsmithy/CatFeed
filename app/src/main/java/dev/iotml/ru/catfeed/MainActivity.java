@@ -172,20 +172,24 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //открыть страницу настроек
             Toast.makeText(this, "Settings open", Toast.LENGTH_SHORT).show();
             //Create new activity
             Intent intent = new Intent(this, SettingsPage.class);
             startActivityForResult(intent,1);
         } else
-        if (id == R.id.action_upnp) {
-
+        if (id == R.id.action_local) {
+            //открыть страницу со списком устройств
             //System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
             UdpBrowser UB = new UdpBrowser();
             UB.Mainfunc();
             Toast.makeText(this, "UPNP find"+UB.ReciveMsg, Toast.LENGTH_SHORT).show();
             //Create new activity
             //Intent intent = new Intent(this, UdpBrowser.class);
-        }
+        } else
+            if (id == R.id.action_mqtt){
+                // открыть страницу с работой по удаленке через mqtt
+            }
         return super.onOptionsItemSelected(item);
     }
 

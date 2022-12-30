@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">CatFeed</string>
-    <string name="action_settings">settings</string>
-    <string name="action_upnp">UPNP</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_local">Локально</string>
+    <string name="action_mqtt">Удаленно</string>
+
     <string name="url_text_edit">Адрес</string>
+
     <string name="port_udp">UDP порт</string>
     <string name="port_ws">WS порт</string>
 
