@@ -13,17 +13,76 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UdpBrowser {
+public class UdpBrowser implements Runnable {
     // Find the server using UDP broadcast
+    DatagramSocket scpg;
+    String ReciveMsg;   //принятое сообщение
+    public static final String ADDRESS = "239.255.255.255"; //широковещательный адрес
+    public static final int PORT = 4210;                    //порт
+    public static boolean running = true;                   //индикатор запуска потока
+    Thread thread;//поток
+    public ArrayList<String> ip_adrsss = new ArrayList<String>();
+    // Конструктор
+    UdpBrowser() {
+        // Создаём новый поток
+        thread = new Thread(this, "UDPthread");
+        thread.start(); // Запускаем поток
+    }
 
+    //принять данные
+    private void receive_data(){
+        byte[] receiveData = new byte[1024];//буфер
+        String response_ip;//найденный IP
+        DatagramSocket clientSocket = null; //create socket to transport data
+        try {
+            clientSocket = new DatagramSocket(PORT);
+        } catch (SocketException e) {
+            Log.d("ssdp", "Socket Exception thrown when creating socket to transport data");
+            e.printStackTrace();
+        }
+        System.out.println(getClass().getName() + ">>> CREATE !!! clientSocket") ;
+        // receive data
+        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        System.out.println(getClass().getName() + ">>> CREATE !!! DatagramPacket");
+        try {
+            if (clientSocket != null) {
+                while(running){
+                    clientSocket.receive(receivePacket);
+                    response_ip = new String(receivePacket.getAddress().getHostAddress());
+                    // проверяем наличие элемента
+                    if(!ip_adrsss.contains(response_ip)){
+                        ip_adrsss.add(response_ip);//если такго нет то добавим в список
+                    }
+                    System.out.println(getClass().getName() + " >>> Find from receivePacket "+ response_ip);
+                }
+                clientSocket.close();
+            }else {System.out.println(getClass().getName() + ">>> ClientSocket is NULL Object");}
+        } catch (IOException e) {
+            Log.d("ssdp","IOException thrown when receiving data");
+            e.printStackTrace();
+        }
+    }
+
+    public void run() {
+        receive_data();
+    }
+
+    public void end() {
+        scpg.close();
+    }
+}
+/*
+class UdpBrowser1 {
+    // Find the server using UDP broadcast
     DatagramSocket scpg;
     String ReciveMsg;
-    public static final String ADDRESS = "239.255.255.255"; //
-    public static final int PORT = 4210;                    //
+    public static final String ADDRESS = "239.255.255.255"; //широковещательный адрес
+    public static final int PORT = 4210;                    //порт
     public static boolean running = true;
 
     public void receive_data(){
@@ -46,7 +105,7 @@ public class UdpBrowser {
                     clientSocket.receive(receivePacket);
                     response_ip = new String(receivePacket.getAddress().getHostAddress());
                     System.out.println(getClass().getName() + " >>> Find from receivePacket "+ response_ip);
-                    SystemClock.sleep(1000); //ms
+                    SystemClock.sleep(10); //ms
                     //Log.d("ssdp","Checking target package to see if its empty on iteration#: ");
                 }
             }else {System.out.println(getClass().getName() + ">>> ClientSocket is NULL Object");}
@@ -146,7 +205,7 @@ public class UdpBrowser {
                     System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.toString());//receivePacket.getAddress().getHostAddress());
                     ReciveMsg = receivePacket.getAddress().toString();
                 }
-*/
+*//*
             }
             //scpg.close();
 
@@ -157,3 +216,4 @@ public class UdpBrowser {
     }
 
 }
+*/
