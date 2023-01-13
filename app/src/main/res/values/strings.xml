@@ -3,11 +3,13 @@
     <string name="action_settings">Настройки</string>
     <string name="action_local">Локально</string>
     <string name="action_mqtt">Удаленно</string>
+    <string name="action_devices">Устройства</string>
     <string name="url_text_edit">Адрес</string>
     <string name="broadcast_udp_adress">UDP адрес</string>
     <string name="broadcast_udp_port">UDP порт</string>
 
     <string name="port_ws">WS порт</string>
+
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -98,6 +100,8 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

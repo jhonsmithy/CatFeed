@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LocalPage.class);
             startActivityForResult(intent,1);
         } else
+        if (id == R.id.action_devices) {
+            //открыть страницу со списком устройств
+            Toast.makeText(this, "Devices list open", Toast.LENGTH_SHORT).show();
+            //Create new activity
+            Intent intent = new Intent(this, DeviceList.class);
+            startActivityForResult(intent,1);
+        } else
             if (id == R.id.action_mqtt){
               // открыть страницу с работой по удаленке через mqtt
             }
