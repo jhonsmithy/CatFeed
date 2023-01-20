@@ -26,23 +26,16 @@ import java.util.ArrayList;
 
 public class DeviceListFragment extends Fragment {
 
-
+    //объявим интерфейс для передачи данных активити
     public interface FragmentToActivity {
         public void callBack(String data);
     }
 
-    public FragmentToActivity msg_to_activity;
+    public FragmentToActivity msg_to_activity;//создадим экземпляр интерфейса
 
-    ListView lv;
-    ArrayAdapter<String> adapter ;
-    // set
-    //private GlobalClass.listService service = null;
-    //GlobalClass sharedData = GlobalClass.getInstance();
-
-    //favoriteColors = service();
-
-
-    String data[]= {"Бразилия", "Аргентина", "Колумбия", "Чили", "Уругвай"};
+    ListView lv;//список для отображения устройств
+    ArrayAdapter<String> adapter ;//адаптер списка
+    GlobalClass sharedData = GlobalClass.getInstance();//обратимся к базовому классу переменных
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -109,14 +102,10 @@ public class DeviceListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_device_list,container,false);
         lv = (ListView) view.findViewById(R.id.list_view_id);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,data);
-        //Установить данные:
+        //sharedData.addToList("one");
+        //sharedData.addToList("teo");
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,sharedData.getList());
 
-        //sharedData.setValue("kundan");
-        //Получить данные:
-
-        //String n = sharedData.getValue();
-        //System.out.println(getClass().getName() + " >>> Fragment to activity: "+ n);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -124,7 +113,7 @@ public class DeviceListFragment extends Fragment {
                 //Toast.makeText(getContext(), "click"+position, Toast.LENGTH_SHORT).show();
                 // получаем выбранный элемент
                 String selectedItem = (String)parent.getItemAtPosition(position);
-                // Посылаем данные Activity
+                // Посылаем выбранные данные Activity
                 SendData(selectedItem);
             }
         });

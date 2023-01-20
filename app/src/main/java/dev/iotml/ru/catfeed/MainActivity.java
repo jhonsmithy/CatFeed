@@ -3,6 +3,7 @@ package dev.iotml.ru.catfeed;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
             startActivityForResult(intent,1);
         } else
         if (id == R.id.action_local) {
-            //открыть страницу со списком устройств
+            //открыть страницу с интерфейсом устройства в браузере
             Toast.makeText(this, "Local page open", Toast.LENGTH_SHORT).show();
             //Create new activity
             Intent intent = new Intent(this, LocalPage.class);
@@ -79,9 +80,17 @@ public class MainActivity extends AppCompatActivity{
             //Create new activity
             Intent intent = new Intent(this, DeviceList.class);
             startActivityForResult(intent,1);
+
         } else
+            if (id == R.id.action_add_device){
+                //открыть страницу со списком устройств
+                Toast.makeText(this, "Device add to list", Toast.LENGTH_SHORT).show();
+                //Create new activity
+                Intent intent = new Intent(this, AddDevice.class);
+                startActivityForResult(intent,1);
+            }else
             if (id == R.id.action_mqtt){
-              // открыть страницу с работой по удаленке через mqtt
+                // открыть страницу с работой по удаленке через mqtt
             }
         return super.onOptionsItemSelected(item);
     }

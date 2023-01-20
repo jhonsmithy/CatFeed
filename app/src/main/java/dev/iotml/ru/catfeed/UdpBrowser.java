@@ -26,6 +26,7 @@ public class UdpBrowser implements Runnable {
     public static final int PORT = 4210;                    //порт
     public static boolean running = true;                   //индикатор запуска потока
     Thread thread;//поток
+    GlobalClass sharedData = GlobalClass.getInstance();//обратимся к базовому классу переменных
     public ArrayList<String> ip_adrsss = new ArrayList<String>();
     // Конструктор
     UdpBrowser() {
@@ -55,10 +56,15 @@ public class UdpBrowser implements Runnable {
                     clientSocket.receive(receivePacket);
                     response_ip = new String(receivePacket.getAddress().getHostAddress());
                     // проверяем наличие элемента
+                    if(!sharedData.getList().contains(response_ip)){
+                        sharedData.addToList(response_ip);
+                        System.out.println(getClass().getName() + " >>> Add device IP: "+ response_ip);
+                    }
                     if(!ip_adrsss.contains(response_ip)){
                         ip_adrsss.add(response_ip);//если такго нет то добавим в список
+                        // проверяем наличие элемент
                     }
-                    System.out.println(getClass().getName() + " >>> Find from receivePacket "+ response_ip);
+                    System.out.println(getClass().getName() + " >>> Ping device IP: "+ response_ip);
                 }
                 clientSocket.close();
             }else {System.out.println(getClass().getName() + ">>> ClientSocket is NULL Object");}

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -18,6 +19,9 @@ public class DeviceList extends FragmentActivity implements DeviceListFragment.F
 
     @Override
     public void callBack(String data) {
-        System.out.println(getClass().getName() + " >>> Fragment to activity: "+ data);
+        //здесь можно обработать данные переданные от фрагмента
+        System.out.println(getClass().getName() + " >>> Open local device from IP: "+ data);
+        Intent intent = new Intent(this, LocalPage.class);
+        startActivityForResult(intent,1);
     }
 }
