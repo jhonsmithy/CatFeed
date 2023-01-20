@@ -20,10 +20,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private WebView webView = null;
     String url_address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,4 +106,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onKeyDown(keyCode, event);
     }
+
 }

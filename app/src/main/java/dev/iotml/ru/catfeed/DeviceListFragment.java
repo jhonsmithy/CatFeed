@@ -1,5 +1,7 @@
 package dev.iotml.ru.catfeed;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -14,6 +16,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DeviceListFragment#newInstance} factory method to
@@ -21,8 +25,23 @@ import android.widget.Toast;
  */
 
 public class DeviceListFragment extends Fragment {
+
+
+    public interface FragmentToActivity {
+        public void callBack(String data);
+    }
+
+    public FragmentToActivity msg_to_activity;
+
     ListView lv;
     ArrayAdapter<String> adapter ;
+    // set
+    //private GlobalClass.listService service = null;
+    //GlobalClass sharedData = GlobalClass.getInstance();
+
+    //favoriteColors = service();
+
+
     String data[]= {"Бразилия", "Аргентина", "Колумбия", "Чили", "Уругвай"};
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,21 +55,22 @@ public class DeviceListFragment extends Fragment {
     interface OnFragmentSendDataListener {
         void onSendData(String data);
     }
-
+*/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            fragmentSendDataListener = (OnFragmentSendDataListener) context;
+            msg_to_activity = (FragmentToActivity) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " должен реализовывать интерфейс OnFragmentInteractionListener");
         }
     }
 
-    private OnFragmentSendDataListener fragmentSendDataListener;
-    String[] countries = { "Бразилия", "Аргентина", "Колумбия", "Чили", "Уругвай"};
-*/
+
+
+
+
     public DeviceListFragment() {
         // Required empty public constructor
     }
@@ -80,6 +100,7 @@ public class DeviceListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -89,17 +110,35 @@ public class DeviceListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_device_list,container,false);
         lv = (ListView) view.findViewById(R.id.list_view_id);
         adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,data);
+        //Установить данные:
+
+        //sharedData.setValue("kundan");
+        //Получить данные:
+
+        //String n = sharedData.getValue();
+        //System.out.println(getClass().getName() + " >>> Fragment to activity: "+ n);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "click"+position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "click"+position, Toast.LENGTH_SHORT).show();
                 // получаем выбранный элемент
                 String selectedItem = (String)parent.getItemAtPosition(position);
                 // Посылаем данные Activity
-                //fragmentSendDataListener.onSendData(selectedItem);
+                SendData(selectedItem);
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        msg_to_activity = null;
+        super.onDetach();
+    }
+
+    private void SendData(String text)
+    {
+        msg_to_activity.callBack(text);
     }
 }
