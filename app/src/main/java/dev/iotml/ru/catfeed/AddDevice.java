@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -18,87 +19,126 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
 
 public class AddDevice extends AppCompatActivity {
+/*
+    private WifiManager wifiManager;
+    private WifiConfiguration wifiConfig;
+    private WifiReceiver wifiResiver;
+    private boolean wifiEnabled;
+    private EditText url;
+    private Button conect;
+    private boolean isClick = false;
+
+    public void init() {
+
+        conect = (Button) findViewById(R.id.button);
+        url = (EditText) findViewById(R.id.editTextTextPersonName);
+
+        // создаем новый объект для подключения к конкретной точке
+        wifiConfig = new WifiConfiguration();
+        // сканнер вайфая который нам будет помогать подключаться к нужной точке
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        //узнаем включен вайфай  или нет
+        wifiEnabled = wifiManager.isWifiEnabled();
+
+        //наш рессивер который будем подключать нас столько сколько нам понадобиться, пока не будет подключена нужная точка
+        wifiResiver = new WifiReceiver();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device);
-        Button button =findViewById(R.id.button);//Находим кнопку
-        button.setOnClickListener(new View.OnClickListener(){//Обработчик события - нажатие на кнопку
-            @Override     public void onClick(View v) {
-                Log.d("LOG_TAG","click");
-                final WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                ScanReceiver scanReceiver = new ScanReceiver();
-                registerReceiver(scanReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-                wifi.startScan();
-            } });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},1);
-        }
+        // метод который инициализирует все что нам нужно
+        init();
 
-        //WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        //List<WifiConfiguration> list = manager.getConfiguredNetworks();
-    }
+        conect.setOnClickListener(new View.OnClickListener() {
 
-    static  public class App extends Application {
-        private WiFiMonitor mWiFiMonitor;
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            mWiFiMonitor = new WiFiMonitor();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);//Произошло изменение сетевого подключения.
-            registerReceiver(mWiFiMonitor,intentFilter);
-        }
-        @Override
-        public void onTerminate() {// Метод предназначен для использования в эмулируемых средах обработки.
-            super.onTerminate();
-            unregisterReceiver(mWiFiMonitor);
-        }
-    }
+            @Override
+            public void onClick(View v) {
+                Log.d("wifi","click");
 
-    static class WiFiMonitor extends BroadcastReceiver {//Базовый класс для кода, который принимает и обрабатывает трансляции, отправленные sendBroadcast (Intent).
-
-        private String LOG_TAG = "myWiFiMonitor";
-        @Override     public void onReceive(Context context, Intent intent) {//вызывается, когда BroadcastReceiver получает трансляцию Intent.
-            String action = intent.getAction();//Применяйте методы getAction() и getData(), чтобы найти действие и данные, связанные с намерением
-            //Действие в объекте Intent устанавливается в методе setAction() и читается методом getAction();
-            Log.d(LOG_TAG, action);//Считываем действие
-            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(CONNECTIVITY_SERVICE);//Получаем объект класса ConnectivityManager, который следит за состоянием сети
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();//Получаем объект класса NetworkInfo для получения описания состояния сети
-            boolean isConnected = activeNetwork != null &&  activeNetwork.isConnectedOrConnecting();//Проверяем подключение
-            Log.d(LOG_TAG,"isConnected: "+isConnected);
-            Toast.makeText(context, "isConnected: "+isConnected, Toast.LENGTH_LONG).show();
-
-            if (!isConnected)
-                return;
-            boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;//Проверяем это Wifi или нет.
-            Log.d(LOG_TAG,"isWiFi: "+isWiFi);
-            Toast.makeText(context, "isWiFi: "+isWiFi, Toast.LENGTH_LONG).show();
-            if (!isWiFi)
-                return;
-            WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);// Используем getSystemService (Class) для извлечения WifiManager для управления доступом Wi-Fi.
-            WifiInfo connectionInfo = wifiManager.getConnectionInfo();//Возвращает динамическую информацию о текущем соединении Wi-Fi, если таковая активна.
-            Log.d(LOG_TAG,connectionInfo.getSSID());
-            Toast.makeText(context, "Connected to Internet: "+connectionInfo.getSSID(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    static class ScanReceiver extends BroadcastReceiver {
-        private String LOG_TAG = " ";
-        @Override     public void onReceive(Context context, Intent intent) {
-            WifiManager wifi = (WifiManager) context.getSystemService(WIFI_SERVICE);//Извлекаем WifiManager для управления доступом Wi-Fi.
-            List scanResultList = wifi.getScanResults();//Возвращает результаты последнего сканирования точки доступа.
-            for (Object scanResult : scanResultList){
-                Log.d(LOG_TAG,scanResult.toString());
-                Toast.makeText(context, "click"+scanResult.toString(), Toast.LENGTH_LONG).show();
+                //если файвай включен то ничего не делаем иначе включаем его
+                if(!wifiEnabled) {
+                    Log.d("wifi","wifi connected");
+                    wifiManager.setWifiEnabled(true);
+                }
+                Log.d("wifi","Enabled state");
+                //запускаем сканнер вайфая, и подключаемся если подкходящая нам есть есть
+                scheduleSendLocation();
+                //запускаем рессивер
+                isClick = true;
             }
-            context.unregisterReceiver(this);
+        });
+    }
+
+
+
+     // Подключаемся к wifi указаному в edit text
+
+    public void scheduleSendLocation() {
+
+        registerReceiver(wifiResiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        wifiManager.startScan();
+    }
+
+    protected void onPause() {
+
+        //если приложение уходит в фон или например выключаем его вообще, то и рессивер тормазим и выключаем.
+        unregisterReceiver(wifiResiver);
+        super.onPause();
+    }
+
+    public void onResume() {
+
+        //если кликнули то запускаем рессивер, если же isClick = false то ждем пока кнопка будет нажата
+        if(isClick)
+            registerReceiver(wifiResiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        super.onResume();
+    }
+
+     // Рессивер который каждый раз запускает сканнер сети
+
+    public class WifiReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context c, Intent intent) {
+
+            //сканируем вайфай точки и узнаем какие доступны
+            List<ScanResult> results = wifiManager.getScanResults();
+            //проходимся по всем возможным точкам
+            //String data = results.get(0).toString();
+            Log.d("wifi","wifi scan: "+results.size());
+            for (final ScanResult ap : results) {
+                Log.d("wifi",ap.SSID.toString());
+                //ищем нужную нам точку с помощью ифа, будет находить то которую вы ввели
+                if(ap.SSID.toString().trim().equals(url.getText().toString().trim())) {
+                    // дальше получаем ее MAC и передаем для коннекрта, MAC получаем из результата
+                    //здесь мы уже начинаем коннектиться
+                    wifiConfig.BSSID = ap.BSSID;
+                    wifiConfig.priority = 1;
+                    wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                    wifiConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                    wifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+                    wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                    wifiConfig.status = WifiConfiguration.Status.ENABLED;
+
+                    //получаем ID сети и пытаемся к ней подключиться,
+                    int netId = wifiManager.addNetwork(wifiConfig);
+                    wifiManager.saveConfiguration();
+                    //если вайфай выключен то включаем его
+                    wifiManager.enableNetwork(netId, true);
+                    //если же он включен но подключен к другой сети то перегружаем вайфай.
+                    wifiManager.reconnect();
+                    break;
+                }
+            }
         }
     }
+*/
 }

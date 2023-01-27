@@ -18,5 +18,6 @@
     <string name="devices_list">Список устройств</string>
     <string name="empty">Нет устройств поблизости</string>
     <string name="button">Button</string>
+    <string name="edittext">wifi_edit</string>
 
 </resources>
