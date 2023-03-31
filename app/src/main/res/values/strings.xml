@@ -7,7 +7,9 @@
     <string name="url_text_edit">Адрес</string>
     <string name="broadcast_udp_adress">UDP адрес</string>
     <string name="broadcast_udp_port">UDP порт</string>
-    <string name="button_scan_wifi">Сканировать</string>
+    <string name="but_scan_txt">Сканировать WiFi</string>
+    <string name="but_connect_txt">Подключится к WiFi </string>
+
     <string name="port_ws">WS порт</string>
 
     <string name="action_add_device">Добавить устройство</string>
@@ -17,7 +19,12 @@
 
     <string name="devices_list">Список устройств</string>
     <string name="empty">Нет устройств поблизости</string>
-    <string name="button">Button</string>
+
+
+
     <string name="edittext">wifi_edit</string>
+
+    <string name="msg_switch_gps">Необходимо включить службы геолокации</string>
+    <string name="msg_switch_wifi">Необходимо включить беспроводную связь</string>
 
 </resources>

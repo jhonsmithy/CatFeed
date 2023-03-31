@@ -23,6 +23,7 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
         load_text();
     }
 
+    //читаем настройки из памяти
     private void load_text() {
         sPref = getSharedPreferences("Settings.ini",MODE_PRIVATE);
         String url_load_text = sPref.getString("url_address","192.168.4.1");
@@ -31,7 +32,7 @@ public class SettingsPage extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        save_text();
+        save_text();//сохранить
         Intent intent = new Intent();
         intent.putExtra("name",url_edit.getText().toString());
         setResult(RESULT_OK,intent);

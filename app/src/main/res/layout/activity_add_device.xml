@@ -21,10 +21,16 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/but_scan_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_scan_wifi" />
+                android:text="@string/but_scan_txt" />
+
+            <Button
+                android:id="@+id/but_connect_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/but_connect_txt" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"

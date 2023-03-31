@@ -60,10 +60,6 @@ public class DeviceListFragment extends Fragment {
         }
     }
 
-
-
-
-
     public DeviceListFragment() {
         // Required empty public constructor
     }

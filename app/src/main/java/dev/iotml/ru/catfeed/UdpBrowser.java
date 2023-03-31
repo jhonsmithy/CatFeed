@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UdpBrowser implements Runnable {
+    private static final String TAG = "UDP";
     // Find the server using UDP broadcast
     DatagramSocket scpg;
     String ReciveMsg;   //принятое сообщение
@@ -43,13 +44,13 @@ public class UdpBrowser implements Runnable {
         try {
             clientSocket = new DatagramSocket(PORT);
         } catch (SocketException e) {
-            Log.d("ssdp", "Socket Exception thrown when creating socket to transport data");
+            Log.e(TAG, "Socket Exception thrown when creating socket to transport data");
             e.printStackTrace();
         }
-        System.out.println(getClass().getName() + ">>> CREATE !!! clientSocket") ;
+        Log.d(TAG, "Create  ClientSocket");
         // receive data
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        System.out.println(getClass().getName() + ">>> CREATE !!! DatagramPacket");
+        Log.d(TAG, "Create  DatagramPacket");
         try {
             if (clientSocket != null) {
                 while(running){
@@ -58,18 +59,18 @@ public class UdpBrowser implements Runnable {
                     // проверяем наличие элемента
                     if(!sharedData.getList().contains(response_ip)){
                         sharedData.addToList(response_ip);
-                        System.out.println(getClass().getName() + " >>> Add device IP: "+ response_ip);
+                        Log.i(TAG,  "Add device IP: "+ response_ip);
                     }
                     if(!ip_adrsss.contains(response_ip)){
                         ip_adrsss.add(response_ip);//если такго нет то добавим в список
                         // проверяем наличие элемент
                     }
-                    System.out.println(getClass().getName() + " >>> Ping device IP: "+ response_ip);
+                    Log.i(TAG,  "Ping device IP: "+ response_ip);
                 }
                 clientSocket.close();
-            }else {System.out.println(getClass().getName() + ">>> ClientSocket is NULL Object");}
+            }else {Log.e(TAG,  "ClientSocket is NULL Object");}
         } catch (IOException e) {
-            Log.d("ssdp","IOException thrown when receiving data");
+            Log.e(TAG,"IOException thrown when receiving data");
             e.printStackTrace();
         }
     }

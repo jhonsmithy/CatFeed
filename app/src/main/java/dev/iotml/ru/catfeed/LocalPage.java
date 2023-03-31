@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class LocalPage extends AppCompatActivity implements View.OnClickListener {
     private WebView webView = null;
-    String url_address="192.168.25.103";
+    public String url_address="192.168.4.1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,6 @@ public class LocalPage extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         //показать сообщение с адресом подключения
         Toast.makeText(this, "http://"+url_address, Toast.LENGTH_SHORT).show();
-        webView.loadUrl("http://"+"192.168.25.103");//подключится по адресу
+        webView.loadUrl("http://"+url_address);//подключится по адресу
     }
 }
